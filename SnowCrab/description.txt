@@ -1,0 +1,6 @@
+﻿Description
+-----------
+
+There are rock crabs, lava crabs, and iridium crabs, but for whatever reason, no crabs on the frozen mine levels. This mod changes that.
+
+Allows configuration of frequency, health, damage dealt, XP, and item drops.

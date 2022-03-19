@@ -1,0 +1,10 @@
+﻿{
+    "Format": "1.25.0",
+    "Changes": [
+        {
+            "Action": "Load",
+            "Target": "SnowCrab",
+            "FromFile": "assets/Snow Crab.xnb"
+        }
+    ]
+}

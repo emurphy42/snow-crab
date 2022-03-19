@@ -1,0 +1,15 @@
+﻿Credits
+-------
+
+ConcernedApe, obviously.
+
+Core functionality:
+* spacechase0 (Monsters - the Framework)
+* veywrn from Github (decompile of SDV core code)
+* Kdau and Spaceeinstein at the SDV wiki (core monster stats)
+
+Graphics:
+* Pathoschild (Content Patcher)
+* Gweniaczek from r/SMAPI (pointing me in the right direction on it)
+* LUST / Assassin Kitty and Lifewire (XNB tools)
+* Authors of GIMP (expediting the palette swap)
