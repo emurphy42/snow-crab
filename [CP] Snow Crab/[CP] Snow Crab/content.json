@@ -3,8 +3,18 @@
     "Changes": [
         {
             "Action": "Load",
-            "Target": "SnowCrab",
+            "Target": "Characters/Monsters/Snow Crab",
             "FromFile": "assets/Snow Crab.xnb"
+        },
+        {
+            "Action": "EditData",
+            "Target": "Data/Monsters",
+            "Entries": {
+                // https://stardewvalleywiki.com/Modding:Monster_data
+                // Mod replaces some of these values from config.json
+                // Future improvement: i18n for at least one language (workaround: edit "Snow Crab" at end of this line)
+                "Snow Crab": "60/10/0/0/false/0/717 .20 286 .2 287 .2 97 .005 99 .001/2/0/1/2/.0/true/8/Snow Crab"
+            }
         }
     ]
 }

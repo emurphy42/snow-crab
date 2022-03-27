@@ -30,6 +30,8 @@ namespace SnowCrab
             // a = WarpedEventArgs
             Helper.Events.Player.Warped += (e, a) => SpawnSnowCrabs(a.NewLocation.NameOrUniqueName);
 
+            Helper.Events.GameLoop.DayStarted += (e, a) => SpawnSnowCrabQuest();
+
             /*
             C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Current\Bin\amd64\Microsoft.Common.CurrentVersion.targets(2301,5): warning MSB3277:
                 Found conflicts between different versions of "Microsoft.Win32.Registry" that could not be resolved.
@@ -44,8 +46,6 @@ namespace SnowCrab
                           Project file item includes which caused reference "C:\Program Files (x86)\Steam\steamapps\common\Stardew Valley\StardewModdingAPI.dll".
                             StardewModdingAPI
             */
-
-            // Future improvement: chance of daily quests to kill some snow crabs
         }
 
         /*********
@@ -134,14 +134,14 @@ namespace SnowCrab
         private StardewValley.Monsters.Monster GetNewSnowCrab(Vector2 pos, Random mineRandom)
         {
             // Initializing using just RockCrab() and then setting location caused a crash (Object reference not set to instance of an object)
-            // Passing name to RockCrab() caused an error (expects a corresponding asset), this was pre-Content Patcher but not important to analyze now
-            var newMonster = new StardewValley.Monsters.RockCrab(pos);
+            // Passing name loads sprite from Characters/Monsters/<name>
+            var newMonster = new StardewValley.Monsters.RockCrab(pos, "Snow Crab");
 
             newMonster.Name = "Snow Crab";
 
             newMonster.Health = this.Config.SnowCrabHealth;
             newMonster.DamageToFarmer = this.Config.SnowCrabDamageToFarmer;
-            // Possible future improvement: adjust base resilience, default 2
+            newMonster.resilience.Value = this.Config.SnowCrabResilience;
             newMonster.ExperienceGained = this.Config.SnowCrabExperienceGained;
 
             var objectsList = this.Config.SnowCrabObjectsToDrop;
@@ -154,8 +154,6 @@ namespace SnowCrab
                     newMonster.objectsToDrop.Add(Convert.ToInt32(objectsSplit[i]));
                 }
             }
-
-            newMonster.Sprite = new AnimatedSprite("SnowCrab");
 
             return newMonster;
         }
@@ -245,6 +243,72 @@ namespace SnowCrab
                 if (this.Config.SnowCrabDebugOutput)
                 {
                     this.Monitor.Log($"[Snow Crab] Replaced {oldNPC.Name} with Snow Crab at ({x}, {y})", LogLevel.Debug);
+                }
+            }
+        }
+
+        /// <summary>Replace some slay-monster quests with snow crabs if appropriate.</summary>
+        // https://github.com/veywrn/StardewValley/blob/master/StardewValley/Quests/SlayMonsterQuest.cs
+        private void SpawnSnowCrabQuest()
+        {
+            // Is there a slay-monsters quest today?
+            var currentQuest = Game1.questOfTheDay;
+            if (currentQuest == null || currentQuest.GetType() == typeof(StardewValley.Quests.SlayMonsterQuest))
+            {
+                return;
+            }
+
+            // Is it for a common monster on the frozen levels?
+            var currentSlayMonsterQuest = (StardewValley.Quests.SlayMonsterQuest)currentQuest;
+            if (currentSlayMonsterQuest.monsterName.Value != "Frost Jelly"
+                && currentSlayMonsterQuest.monsterName.Value != "Dust Spirit")
+            {
+                return;
+            }
+
+            // Chance to change it to snow crabs
+            var questRandom = new Random();
+            if (questRandom.NextDouble() < this.Config.SnowCrabQuestChance)
+            {
+                var oldMonsterName = currentSlayMonsterQuest.monsterName.Value;
+
+                // Replace core attributes
+                currentSlayMonsterQuest.monster.Value = GetNewSnowCrab(Vector2.Zero, questRandom);
+                currentSlayMonsterQuest.monsterName.Value = currentSlayMonsterQuest.monster.Value.Name;
+                currentSlayMonsterQuest.numberToKill.Value = questRandom.Next(this.Config.SnowCrabQuestMinimum, this.Config.SnowCrabQuestMaximum - 1);
+                currentSlayMonsterQuest.reward.Value = currentSlayMonsterQuest.numberToKill.Value * this.Config.SnowCrabQuestRewardPerKill;
+
+                // Replace quest description
+                currentSlayMonsterQuest.parts.Clear();
+                currentSlayMonsterQuest.parts.Add(new StardewValley.Quests.DescriptionElement(
+                    "Strings\\StringsFromCSFiles:SlayMonsterQuest.cs.13747", // "An invasive crab species is living in the local mine, ..."
+                    currentSlayMonsterQuest.numberToKill.Value
+                ));
+                currentSlayMonsterQuest.parts.Add(new StardewValley.Quests.DescriptionElement(
+                    "Strings\\StringsFromCSFiles:FishingQuest.cs.13274", // "\n \n- {0}g reward."
+                    currentSlayMonsterQuest.reward.Value
+                ));
+
+                // Replace quest giver
+                currentSlayMonsterQuest.target.Value = "Demetrius";
+
+                // Replace progress description
+                currentSlayMonsterQuest.objective.Value = new StardewValley.Quests.DescriptionElement(
+                    "Strings\\StringsFromCSFiles:SlayMonsterQuest.cs.13770", // "{0}/{1} {2} defeated"
+                    "0", currentSlayMonsterQuest.numberToKill.Value, currentSlayMonsterQuest.monster.Value
+                );
+
+                // Replace dialogue on completion
+                currentSlayMonsterQuest.dialogueparts.Clear();
+                currentSlayMonsterQuest.dialogueparts.Add(new StardewValley.Quests.DescriptionElement(
+                    "Strings\\StringsFromCSFiles:SlayMonsterQuest.cs.13750", // "Hey, I see you culled the {0} population a bit. ..."
+                    currentSlayMonsterQuest.monster.Value
+                ));
+
+                // Optionally output to console each time something was changed
+                if (this.Config.SnowCrabDebugOutput)
+                {
+                    this.Monitor.Log($"[Snow Crab] Replaced {oldMonsterName} quest with Snow Crab quest", LogLevel.Debug);
                 }
             }
         }

@@ -26,7 +26,8 @@ namespace SnowCrab
         // DamageToFarmer: Rock Crab = 5, Lava Crab = 15, Iridium Crab = 15
         public int SnowCrabDamageToFarmer { get; set; } = 10;
 
-        // Possible future improvement: adjust base resilience, default 2
+        // Resilience: Rock Crab = 1, Lava Crab = 3
+        public int SnowCrabResilience { get; set; } = 2;
 
         // ExperienceGained: Rock Crab = 4, Lava Crab = 12, Iridium Crab = 20
         public int SnowCrabExperienceGained { get; set; } = 8;
@@ -36,6 +37,19 @@ namespace SnowCrab
         //   Lava Crab = 717 (Crab) .25 287 (Bomb) .4 98 (Dwarf Scroll III) .005 99 (Dwarf Scroll IV) .001
         //   Iridium Crab = 732 (Crab Cakes) .5 386 (Iridium Ore)  .5 386 .5 386 .5
         public string SnowCrabObjectsToDrop { get; set; } = "717 .20 286 .2 287 .2 97 .005 99 .001"; // 97 = Dwarf Scroll II
+
+        // https://github.com/veywrn/StardewValley/blob/master/StardewValley/Quests/SlayMonsterQuest.cs
+
+        // Chance that a quest to kill a common frozen-levels monster is for snow crabs
+        //   (normally 50/50 between blue slimes and dust spirits)
+        public double SnowCrabQuestChance { get; set; } = .333;
+
+        // Minimum/maximum number of snow crabs to kill for a quest: Rock Crab, Lava Crab = 2 to 5
+        public int SnowCrabQuestMinimum { get; set; } = 2;
+        public int SnowCrabQuestMaximum { get; set; } = 5;
+
+        // Quest reward per snow crab killed: Rock Crab = 75, Lava Crab = 180
+        public int SnowCrabQuestRewardPerKill { get; set; } = 125;
 
         // Setting this to true produces console output each time a snow crab is spawned
         public bool SnowCrabDebugOutput { get; set; } = false;

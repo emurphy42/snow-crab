@@ -4,3 +4,5 @@
 0.9.0: Initial release.
 
 1.0.0: Snow crabs no longer spawn on dungeon levels.
+
+1.1.0: Increased resilience (defense). Quest of the day may request killing some snow crabs.

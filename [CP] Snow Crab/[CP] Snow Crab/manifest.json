@@ -1,7 +1,7 @@
 {
   "Name": "[CP] Snow Crab",
   "Author": "John Peters (you know, the farmer?)",
-  "Version": "1.0.0",
+  "Version": "1.1.0",
   "Description": "Adds snow crabs to frozen mine levels.",
   "UniqueID": "JohnPeters.SnowCrabCP",
   "MinimumApiVersion": "3.0.0",
