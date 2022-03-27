@@ -104,13 +104,6 @@ namespace SnowCrab
                 return false;
             }
 
-            // Dungeon levels aren't frozen
-            var where = (StardewValley.Locations.MineShaft)Game1.currentLocation;
-            if (where.getMineArea() == StardewValley.Locations.MineShaft.quarryMineShaft)
-            {
-                return false;
-            }
-
             // Frozen levels are 41 through 79
             var levelNumber = GetMineLevel(locationName);
             if (levelNumber < 41 || levelNumber > 79)
@@ -120,6 +113,13 @@ namespace SnowCrab
 
             // Levels 50, 60, 70 don't have monsters
             if (levelNumber % 10 == 0)
+            {
+                return false;
+            }
+
+            // Dungeon levels aren't frozen
+            var where = (StardewValley.Locations.MineShaft)Game1.currentLocation;
+            if (where.getMineArea() == StardewValley.Locations.MineShaft.quarryMineShaft)
             {
                 return false;
             }
