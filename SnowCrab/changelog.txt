@@ -6,3 +6,5 @@
 1.0.0: Snow crabs no longer spawn on dungeon levels.
 
 1.1.0: Increased resilience (defense). Quest of the day may request killing some snow crabs.
+
+1.1.1: Fix bug preventing snow crab quests from appearing.
