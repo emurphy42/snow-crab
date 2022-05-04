@@ -253,7 +253,7 @@ namespace SnowCrab
         {
             // Is there a slay-monsters quest today?
             var currentQuest = Game1.questOfTheDay;
-            if (currentQuest == null || currentQuest.GetType() == typeof(StardewValley.Quests.SlayMonsterQuest))
+            if (currentQuest == null || currentQuest.GetType() != typeof(StardewValley.Quests.SlayMonsterQuest))
             {
                 return;
             }
