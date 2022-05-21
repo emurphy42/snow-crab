@@ -8,3 +8,5 @@
 1.1.0: Increased resilience (defense). Quest of the day may request killing some snow crabs.
 
 1.1.1: Fix bug preventing snow crab quests from appearing.
+
+1.1.2: Fix ZIP file to put Content Patcher stuff in correct location.
