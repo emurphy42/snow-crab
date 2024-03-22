@@ -151,7 +151,7 @@ namespace SnowCrab
             {
                 if (mineRandom.NextDouble() < Convert.ToDouble(objectsSplit[i + 1]))
                 {
-                    newMonster.objectsToDrop.Add(Convert.ToInt32(objectsSplit[i]));
+                    newMonster.objectsToDrop.Add(objectsSplit[i]);
                 }
             }
 
@@ -181,15 +181,15 @@ namespace SnowCrab
             var mineRandom = new Random();
             var monstersToReplace = new Netcode.NetCollection<NPC>();
             Type oldNPCType;
-            int x;
-            int y;
+            float x;
+            float y;
             Vector2 pos;
             StardewValley.Monsters.Monster newMonster;
 
             // Select monsters to replace
             // Replacement occurs later because it alters the contents of getCharacters(), which is what this loop is looping through
             // Possible future improvement: make a copy of the list, loop through copy and do replacements immediately
-            foreach (var oldNPC in where.getCharacters())
+            foreach (var oldNPC in where.characters)
             {
                 oldNPCType = oldNPC.GetType();
 
@@ -228,8 +228,8 @@ namespace SnowCrab
             foreach (var oldNPC in monstersToReplace)
             {
                 // Get location
-                x = oldNPC.getTileX();
-                y = oldNPC.getTileY();
+                x = oldNPC.Tile.X;
+                y = oldNPC.Tile.Y;
                 pos = new Vector2(x, y) * Game1.tileSize;
 
                 // Remove existing monster
