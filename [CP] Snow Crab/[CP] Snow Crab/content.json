@@ -1,20 +1,44 @@
 ﻿{
-    "Format": "1.25.0",
-    "Changes": [
-        {
-            "Action": "Load",
-            "Target": "Characters/Monsters/Snow Crab",
-            "FromFile": "assets/Snow Crab.xnb"
-        },
-        {
-            "Action": "EditData",
-            "Target": "Data/Monsters",
-            "Entries": {
-                // https://stardewvalleywiki.com/Modding:Monster_data
-                // Mod replaces some of these values from config.json
-                // Future improvement: i18n for at least one language (workaround: edit "Snow Crab" at end of this line)
-                "Snow Crab": "60/10/0/0/false/0/717 .20 286 .2 287 .2 97 .005 99 .001/2/0/1/2/.0/true/8/Snow Crab"
-            }
-        }
-    ]
+  "Format": "2.1.0",
+  // This must be defined here (not in the C# part of the mod) so "When" below understands it
+  "ConfigSchema": {
+    "CountsTowardEradication": {
+      "AllowValues": "true, false",
+      "Default": true
+    }
+  },
+  "Changes": [
+    {
+      "Action": "Load",
+      "Target": "Characters/Monsters/Snow Crab",
+      "FromFile": "assets/Snow Crab.xnb"
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Monsters",
+      "Entries": {
+        // https://stardewvalleywiki.com/Modding:Monster_data
+        // Mod replaces some of these values from config.json
+        // Future improvement: i18n for at least one language (workaround: edit "Snow Crab" at end of this line)
+        "Snow Crab": "60/10/0/0/false/0/717 .20 286 .2 287 .2 97 .005 99 .001/2/0/1/2/.0/true/8/Snow Crab"
+      }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/MonsterSlayerQuests",
+      "TargetField": [ "Crabs" ],
+      "Entries": {
+        // Future improvement: just add "Snow Crab" rather than replacing the entire list
+        "Targets": [
+          "Rock Crab",
+          "Snow Crab",
+          "Lava Crab",
+          "Iridium Crab"
+        ]
+      },
+      "When": {
+        "CountsTowardEradication": true
+      }
+    }
+  ]
 }
